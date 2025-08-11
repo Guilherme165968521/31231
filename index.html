@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8" />
+<title>Fonte local via parâmetro</title>
+<style id="dynamic-font-style">
+  body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    color: white;
+    user-select: none;
+    font-size: 25px;
+  }
+</style>
+<script>
+  function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+  }
+
+  function loadFont(fontFile) {
+    if(!fontFile) return;
+    const fontName = fontFile.split('.')[0]; // só nome sem extensão
+
+    const style = document.getElementById('dynamic-font-style');
+    style.innerHTML = `
+      @font-face {
+        font-family: '${fontName}';
+        src: url('fonts/${fontFile}') format('truetype');
+      }
+      body {
+        font-family: '${fontName}', sans-serif;
+        margin: 0;
+        padding: 0;
+        background: transparent;
+        color: white;
+        user-select: none;
+        font-size: 25px;
+      }
+    `;
+  }
+
+  window.onload = function() {
+    const fontFile = getQueryParam('font');
+    loadFont(fontFile);
+  }
+</script>
+</head>
+<body>
+  <div>Texto usando a fonte local carregada via parâmetro.</div>
+</body>
+</html>
